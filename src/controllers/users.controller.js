@@ -1,18 +1,20 @@
 import { getUsersService, getUserByIdService, createUserService } from '../services/users.service.js'
+import { success, error } from '../responses/users.response.js'
 
 export const getUsersController = (req, res) => {
     const result = getUsersService()
-    res.send({ users: result })
+    return success(res, result)
 }
 
 export const getUserByIdController = (req, res) => {
     const id = req.params.id
     const result = getUserByIdService(id)
-    res.send({ user: result })
+    if (!result) return error(res)
+    return success(res, result)
 }
 
 export const createUserController = (req, res) => {
     const user = req.body
-    const userCreated = createUserService(user)
-    res.send({ user: userCreated })
+    const result = createUserService(user)
+    return success(res, result)
 }
